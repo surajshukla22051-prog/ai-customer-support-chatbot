@@ -1,6 +1,6 @@
 # NovaDesk — Local AI Customer Support
 
-NovaDesk is a responsive customer-support chatbot and visual workspace board built with plain HTML, CSS, and JavaScript. Its lightweight assistant matches questions to a locally stored FAQ library, so it works without an AI API key, account, server, or build step.
+NovaDesk is a responsive customer-support help center with searchable guides, topic cards, FAQ management, conversation history, and a private browser-based assistant. It is built with plain HTML, CSS, and JavaScript, and needs no AI API key, account, server, or build step.
 
 ## Try it
 
@@ -14,7 +14,8 @@ To run it locally, download or clone this repository and open `index.html` in a 
 - **FAQ manager:** add, edit, delete, and search support answers; updated FAQs are available to the assistant immediately.
 - **Conversation history:** browse, search, inspect, export, or clear locally saved chats.
 - **Workspace backup:** download FAQs and conversation history as a JSON file.
-- **Visual support board:** see your FAQ knowledge, recent chats, and private assistant setup in an editorial, multi-column workspace.
+- **Help center:** browse topic collections, search curated support guides and your FAQs, and open readable article pages.
+- **Local answers:** follow an article by asking the assistant a question matched against the FAQ library.
 - **Responsive dashboard:** works on desktop, tablet, and mobile screen sizes.
 - **Privacy-first by design:** FAQ data and chat history are stored in this browser's local storage; the app makes no AI API calls.
 
@@ -26,9 +27,9 @@ NovaDesk uses local text normalization, related-word matching, and FAQ relevance
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Dashboard, chat, FAQ manager, and conversation dialogs |
-| `styles.css` | Responsive light-canvas board interface and visual effects |
-| `app.js` | Local matching, FAQ management, chat history, and export |
+| `index.html` | Help-center pages, chat, FAQ manager, and article dialogs |
+| `styles.css` | Responsive help-center interface and visual effects |
+| `app.js` | Article search, local matching, FAQ management, chat history, and export |
 | `.github/workflows/pages.yml` | Automatically publishes the static site to GitHub Pages on pushes to `main` |
 
 ## Data and privacy

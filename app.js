@@ -18,6 +18,17 @@
     available: ["hours"], human: ["support"], support: ["help"], help: ["support"],
     kaise: ["how"], password: ["reset", "forgot"], "customer": ["support"]
   };
+  const helpArticles = [
+    { id: "getting-started", category: "GETTING STARTED", title: "Welcome to NovaDesk", summary: "A quick tour of your private support workspace.", answer: "NovaDesk brings help topics, a locally run FAQ assistant, and an editable knowledge library together in one workspace. Use the navigation at the top to browse articles, ask the assistant, update FAQs, or review your conversation history. It works in your browser with no account or AI API key.", keywords: "welcome getting started first visit overview setup workspace" },
+    { id: "use-assistant", category: "THE ASSISTANT", title: "Chat with the assistant", summary: "Ask a question and get a grounded FAQ answer.", answer: "Open Ask the assistant, choose a suggested question or type your own, and press Enter. NovaDesk compares your words with FAQ questions, answers, and keywords saved in this browser. A close match returns the saved answer; when the match is weak, it tells you instead of making up an answer.", keywords: "chat assistant ask question how works local ai" },
+    { id: "faq-library", category: "KNOWLEDGE & ANSWERS", title: "Build your FAQ library", summary: "Add, edit, search, and organize helpful answers.", answer: "Choose Manage FAQs to maintain the support knowledge base. Add a clear question, a helpful answer, and optional comma-separated keywords. Edit an existing FAQ when information changes, or delete an entry that is no longer relevant. The assistant can use your updated FAQs right away.", keywords: "faq library knowledge base add edit organize create answer" },
+    { id: "matching", category: "KNOWLEDGE & ANSWERS", title: "Improve answer matching", summary: "Give the local matcher useful words to work with.", answer: "Write FAQ questions the way a customer might ask them. Include common alternatives as keywords—for example, add 'forgot', 'login', and 'account' to a password-reset FAQ. Keep each answer focused. Matching uses local word relevance, so this is helpful FAQ retrieval rather than a generative AI model.", keywords: "matching keywords improve relevance training score similar words" },
+    { id: "no-answer", category: "TROUBLESHOOTING", title: "When no answer is found", summary: "Help NovaDesk find the right FAQ next time.", answer: "If the assistant says it cannot find a reliable answer, try simpler or alternate words. If the answer should be available, open Manage FAQs and add an FAQ for that question, including the important words as keywords. The next matching question can then use that saved answer.", keywords: "no answer fallback troubleshooting cannot find match" },
+    { id: "privacy", category: "PRIVACY & WORKSPACE", title: "Privacy and local storage", summary: "Where your FAQs and conversations are kept.", answer: "NovaDesk stores FAQs and conversation history in the browser's local storage on this device and browser profile. Questions are matched locally; the assistant makes no AI API calls. Local storage does not sync to other devices or browsers, and clearing this browser's site data can remove the saved information.", keywords: "privacy secure data local browser device storage account cloud" },
+    { id: "backup", category: "PRIVACY & WORKSPACE", title: "Export a workspace backup", summary: "Save FAQs and conversations to a JSON file.", answer: "Use Export All Workspace Data on the help center or Export data in Conversation History. Your browser downloads a JSON file with a timestamp, FAQ library, and saved conversations. Keep the file somewhere safe: NovaDesk does not sync local data between devices.", keywords: "backup export download json file save data restore transfer" },
+    { id: "history", category: "PRIVACY & WORKSPACE", title: "Manage conversation history", summary: "Review, search, export, or clear saved chats.", answer: "Open Conversations to search saved chats and inspect their messages. Export data downloads your FAQs and conversations together as a JSON backup. Clear history removes conversation logs from this browser, but it does not delete FAQs.", keywords: "history logs conversations saved chats search review clear delete" },
+    { id: "no-api", category: "ABOUT THE AI", title: "Does NovaDesk need an AI API key?", summary: "Understand the local assistant and its limits.", answer: "No API key or paid AI service is needed. NovaDesk uses browser-based text normalization and relevance scoring to retrieve an answer from your FAQ library. It does not generate open-ended answers like a large language model and does not send your question to an AI API.", keywords: "api key no api cost free offline ai model generative cloud" }
+  ];
 
   const $ = selector => document.querySelector(selector);
   const $$ = selector => [...document.querySelectorAll(selector)];
@@ -263,9 +274,12 @@
   }
 
   function renderMetrics() {
-    $("#statFaqs").textContent = faqs.length;
-    $("#statChats").textContent = logs.length;
-    $("#faqNavCount").textContent = faqs.length;
+    const faqMetric = $("#statFaqs");
+    const chatMetric = $("#statChats");
+    const faqCount = $("#faqNavCount");
+    if (faqMetric) faqMetric.textContent = faqs.length;
+    if (chatMetric) chatMetric.textContent = logs.length;
+    if (faqCount) faqCount.textContent = faqs.length;
     renderWorkspaceBoard();
   }
 
@@ -303,10 +317,72 @@
       : `<div class="board-empty">Start a chat to add your first conversation.</div>`;
   }
 
+  function renderHelpResults(query) {
+    const cleanQuery = normalizeText(query);
+    const resultSection = $("#helpSearchResults");
+    const resultsBox = $("#articleResults");
+    if (!cleanQuery) {
+      resultSection.hidden = true;
+      resultsBox.replaceChildren();
+      return;
+    }
+
+    const tokens = [...new Set(getTokens(cleanQuery))];
+    const articleResults = helpArticles.map(article => {
+      const searchable = normalizeText(`${article.title} ${article.summary} ${article.answer} ${article.keywords}`);
+      const hits = tokens.filter(token => searchable.includes(token)).length;
+      return { ...article, score: hits / Math.max(tokens.length, 1) };
+    }).filter(article => article.score > 0)
+      .sort((first, second) => second.score - first.score);
+
+    const faqResults = faqs.filter(faq =>
+      normalizeText(`${faq.question} ${faq.answer} ${(faq.keywords || []).join(" ")}`)
+        .includes(cleanQuery)
+      || tokens.some(token => normalizeText(`${faq.question} ${faq.answer} ${(faq.keywords || []).join(" ")}`).includes(token))
+    ).map(faq => ({
+      id: faq.id,
+      category: "YOUR FAQ LIBRARY",
+      title: faq.question,
+      summary: faq.answer,
+      answer: faq.answer,
+      score: scoreFaq(cleanQuery, faq) + 0.2
+    }));
+
+    const uniqueResults = new Map();
+    for (const result of [...articleResults, ...faqResults].sort((first, second) => second.score - first.score)) {
+      uniqueResults.set(result.id, result);
+    }
+    const results = [...uniqueResults.values()].slice(0, 8);
+    $("#searchResultsTitle").textContent = `Results for “${query.trim()}”`;
+    resultSection.hidden = false;
+
+    if (!results.length) {
+      resultsBox.innerHTML = `<div class="search-empty"><span>⌕</span><h3>No exact matches yet</h3><p>Try a shorter search, browse the topics below, or ask the local assistant.</p><button class="button button-primary" type="button" data-view="chat">Ask the assistant <span>↗</span></button></div>`;
+      return;
+    }
+
+    resultsBox.innerHTML = results.map(article => `
+      <button class="article-result-card" type="button" data-open-article="${escapeHtml(article.id)}">
+        <span class="article-result-top"><span>${escapeHtml(article.category)}</span><i>↗</i></span>
+        <strong>${escapeHtml(article.title)}</strong>
+        <span class="article-result-summary">${escapeHtml(article.summary)}</span>
+        <span class="article-read">Read guide <b>→</b></span>
+      </button>
+    `).join("");
+  }
+
+  function openHelpArticle(article) {
+    $("#articleCategory").textContent = article.category;
+    $("#articleTitle").textContent = article.title;
+    $("#articleAnswer").textContent = article.answer;
+    $("#articleDialog").showModal();
+  }
+
   function routeTo(viewName) {
     $$(".view").forEach(view => view.classList.toggle("active-view", view.id === `view-${viewName}`));
     $$(".nav-item").forEach(item => item.classList.toggle("active", item.dataset.view === viewName));
-    $("#crumbCurrent").textContent = viewName === "faqs" ? "FAQ Manager" : viewName.charAt(0).toUpperCase() + viewName.slice(1);
+    const labels = { overview: "Home", chat: "Ask the assistant", faqs: "Manage FAQs", logs: "Conversations" };
+    $("#crumbCurrent").textContent = labels[viewName] || viewName;
     if (viewName === "chat") { renderChatMessages(); renderSuggestions(); }
     if (viewName === "faqs") renderFaqList();
     if (viewName === "logs") renderLogsGrid();
@@ -328,8 +404,30 @@
 
     const viewButton = target.closest("[data-view]");
     if (viewButton) {
+      if (viewButton.closest("#articleDialog")) $("#articleDialog").close();
       routeTo(viewButton.dataset.view);
       if (viewButton.id === "quickAddFaq") openFaqDialog();
+    }
+
+    const topicButton = target.closest("[data-search]");
+    if (topicButton) {
+      const query = topicButton.dataset.search || "";
+      $("#helpSearch").value = query;
+      renderHelpResults(query);
+      $("#helpSearchResults").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    const resultButton = target.closest("[data-open-article]");
+    if (resultButton) {
+      const articleId = resultButton.dataset.openArticle;
+      const article = helpArticles.find(item => item.id === articleId)
+        || faqs.find(item => item.id === articleId);
+      if (article) openHelpArticle({
+        category: article.category || "YOUR FAQ LIBRARY",
+        title: article.title || article.question,
+        answer: article.answer,
+        summary: article.summary || article.answer
+      });
     }
 
     const suggestion = target.closest("[data-q]");
@@ -376,6 +474,19 @@
   });
   $("#faqSearch").addEventListener("input", renderFaqList);
   $("#logSearch").addEventListener("input", renderLogsGrid);
+  $("#helpSearchForm").addEventListener("submit", event => {
+    event.preventDefault();
+    renderHelpResults($("#helpSearch").value);
+  });
+  $("#helpSearch").addEventListener("input", event => {
+    if (!event.target.value.trim()) renderHelpResults("");
+  });
+  $("#clearHelpSearch").addEventListener("click", () => {
+    $("#helpSearch").value = "";
+    renderHelpResults("");
+    $("#helpSearch").focus();
+  });
+  $("#closeArticle").addEventListener("click", () => $("#articleDialog").close());
   $("#addFaqBtn").addEventListener("click", () => openFaqDialog());
   $("#closeFaqDialog").addEventListener("click", () => $("#faqDialog").close());
   $("#cancelFaqBtn").addEventListener("click", () => $("#faqDialog").close());
@@ -411,7 +522,7 @@
     showToast("Workspace backup downloaded.");
   }
 
-  $("#quickExport").addEventListener("click", exportWorkspaceData);
+  $("#quickExport")?.addEventListener("click", exportWorkspaceData);
   $("#exportLogsBtn").addEventListener("click", exportWorkspaceData);
   $("#clearLogsBtn").addEventListener("click", () => {
     if (!confirm("Clear all saved conversations? This cannot be undone.")) return;

@@ -3,272 +3,200 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b0d18">
-  <meta name="description" content="NovaDesk is a private, browser-based customer support chatbot powered by your own FAQ knowledge base. No API key required.">
-  <title>NovaDesk — Local AI Support Studio</title>
+  <meta name="theme-color" content="#fbf8f2">
+  <meta name="description" content="Search the NovaDesk help center for setup, FAQs, the private local assistant, and troubleshooting guides.">
+  <title>NovaDesk Help Center</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-
-  <!-- Background Ambient Lights -->
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
-
+<body class="help-center-page">
   <div class="app-shell">
-    <!-- Sidebar Navigation -->
     <aside class="sidebar">
-      <div class="brand">
-        <strong>Nova<span>Desk</span></strong>
-        <p class="brand-caption">SUPPORT STUDIO</p>
-      </div>
-      
-      <nav class="nav-list">
-        <button class="nav-item active" data-view="overview">🎛️ Overview</button>
-        <button class="nav-item" data-view="chat">💬 Live Chatbot</button>
-        <button class="nav-item" data-view="faqs">📂 FAQ Manager <span class="nav-count" id="faqNavCount">0</span></button>
-        <button class="nav-item" data-view="logs">📜 Chat Logs</button>
+      <a class="brand" href="#view-overview" aria-label="NovaDesk Help Center home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span class="brand-name">NovaDesk<small>HELP CENTER</small></span>
+      </a>
+      <nav class="nav-list" aria-label="Help center navigation">
+        <button class="nav-item active" type="button" data-view="overview">Help center</button>
+        <button class="nav-item" type="button" data-view="chat">Ask the assistant</button>
+        <button class="nav-item" type="button" data-view="faqs">Manage FAQs <span class="nav-count" id="faqNavCount">0</span></button>
+        <button class="nav-item" type="button" data-view="logs">Conversations</button>
       </nav>
-
-      <div class="sidebar-bottom">
-        <div class="status-card">
-          <div class="status-top">
-            <span class="status-pulse"></span>
-            <strong>Local Engine Active</strong>
-          </div>
-          <p>No API calls. Your data stays in this browser.</p>
-        </div>
+      <div class="sidebar-account">
+        <span class="account-avatar">N</span>
+        <span><strong>NovaDesk workspace</strong><small>Private · on this device</small></span>
       </div>
     </aside>
 
-    <!-- Main Content Work Area -->
     <main class="main-content">
-      
-      <!-- TOP BAR -->
       <header class="topbar">
-        <div class="breadcrumbs">Workspace / <strong id="crumbCurrent">Overview</strong></div>
+        <div class="breadcrumbs">Help center <span>/</span> <strong id="crumbCurrent">Home</strong></div>
         <div class="top-actions">
-          <div class="system-status"><i></i> Running privately on this device</div>
-          <div class="top-avatar" aria-label="NovaDesk assistant">N</div>
+          <div class="system-status"><i></i> All systems ready</div>
+          <button class="top-avatar" type="button" data-view="chat" aria-label="Ask NovaDesk">✦</button>
         </div>
       </header>
 
-      <!-- VIEW 1: OVERVIEW DASHBOARD -->
-      <section id="view-overview" class="view active-view">
-        <div class="welcome-row">
-          <div>
-            <p class="eyebrow">YOUR SUPPORT WORKSPACE</p>
-            <h1>Support, <span class="gradient-text">without the wait.</span></h1>
-            <p class="subtitle">A fast, private support assistant trained on your FAQs. Everything runs right here in your browser.</p>
+      <section id="view-overview" class="view active-view help-home">
+        <section class="help-hero" aria-labelledby="heroTitle">
+          <div class="hero-art" aria-hidden="true">
+            <span class="hero-art-orbit orbit-one"></span>
+            <span class="hero-art-orbit orbit-two"></span>
+            <span class="hero-art-spark">✦</span>
+            <span class="hero-art-card hero-card-one">FAQ <b>↗</b></span>
+            <span class="hero-art-card hero-card-two">LOCAL AI <b>✦</b></span>
+            <span class="hero-art-dot"></span>
           </div>
-        </div>
-
-        <!-- Live Analytics Stats Cards (Extra Feature) -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-top"><span class="stat-icon violet">📂</span><span class="stat-tag">KNOWLEDGE BASE</span></div>
-            <div class="stat-value" id="statFaqs">0</div>
-            <div class="stat-label">Active FAQs</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-top"><span class="stat-icon cyan">💬</span><span class="stat-tag">TOTAL LOGS</span></div>
-            <div class="stat-value" id="statChats">0</div>
-            <div class="stat-label">Saved Conversations</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-top"><span class="stat-icon green">⚡</span><span class="stat-tag">AI ENGINE</span></div>
-            <div class="stat-value">Local</div>
-            <div class="stat-label">No API key or cloud calls</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-top"><span class="stat-icon orange">🛡️</span><span class="stat-tag">STORAGE</span></div>
-            <div class="stat-value" style="font-size: 20px; margin-top: 18px;">Local</div>
-            <div class="stat-label">Your browser only</div>
-          </div>
-        </div>
-
-        <section class="workspace-board" aria-labelledby="boardTitle">
-          <div class="board-heading">
-            <div>
-              <p class="eyebrow">WORKSPACE CANVAS</p>
-              <h2 id="boardTitle">Your support board</h2>
-              <p class="board-subtitle">Knowledge, conversations, and the assistant—all in one place.</p>
+          <div class="hero-copy">
+            <span class="hero-kicker"><i></i> NOVADESK SUPPORT</span>
+            <h1 id="heroTitle">What can we <span>help you find?</span></h1>
+            <p>Explore the help center or ask the private assistant to find a quick answer.</p>
+            <form class="help-search" id="helpSearchForm" role="search">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input id="helpSearch" type="search" placeholder="Search help articles..." autocomplete="off" aria-label="Search help articles" maxlength="120">
+              <button type="submit" aria-label="Search">Search <span>↗</span></button>
+            </form>
+            <div class="popular-searches">
+              <span>POPULAR</span>
+              <button type="button" data-search="password">Reset password</button>
+              <button type="button" data-search="chat">Chat assistant</button>
+              <button type="button" data-search="backup">Back up data</button>
             </div>
-            <span class="board-live"><i></i> Updates as you work</span>
           </div>
-          <div class="board-columns">
-            <section class="board-column">
-              <div class="board-column-head"><h3>Knowledge base</h3><span id="boardFaqCount">0</span></div>
-              <div class="board-column-body" id="boardFaqs"></div>
-            </section>
-            <section class="board-column">
-              <div class="board-column-head"><h3>Recent conversations</h3><span id="boardChatCount">0</span></div>
-              <div class="board-column-body" id="boardChats"></div>
-            </section>
-            <section class="board-column assistant-board-column">
-              <div class="board-column-head"><h3>Assistant setup</h3><span class="board-spark">✦</span></div>
-              <article class="board-card setup-card">
-                <div class="setup-art" aria-hidden="true"><span>✦</span><i></i><b></b></div>
-                <span class="board-card-label">PRIVATE · BROWSER-BASED</span>
-                <h4>Grounded in your knowledge</h4>
-                <p>The assistant looks for a close match in your FAQs and tells you when it cannot find one.</p>
-                <div class="board-tags"><span>No API key</span><span>Local only</span></div>
-              </article>
-            </section>
-          </div>
+          <div class="hero-footnote"><span>✦</span> Helpful answers, built around your knowledge.</div>
         </section>
 
-        <!-- Quick Actions Panel -->
-        <div class="bottom-grid">
-          <div class="panel">
-            <div class="panel-heading"><h3>Quick Actions & Control</h3></div>
-            <button class="quick-action" id="quickAddFaq" data-view="faqs">
-              <span class="quick-icon purple">＋</span>
-              <span><strong>Add New FAQ Entry</strong><small>Add custom data to train your bot</small></span>
-            </button>
-            <button class="quick-action" id="quickTestBot" data-view="chat">
-              <span class="quick-icon blue">⚡</span>
-              <span><strong>Test Live Assistant</strong><small>Chat as a customer to test matches</small></span>
-            </button>
-            <button class="quick-action" id="quickExport">
-              <span class="quick-icon green">⇩</span>
-              <span><strong>Export All Workspace Data</strong><small>Download FAQs and Logs as JSON</small></span>
-            </button>
+        <section id="helpSearchResults" class="help-search-results" aria-live="polite" hidden>
+          <div class="help-section-heading search-result-heading">
+            <div><span class="section-kicker">HELP ARTICLES</span><h2 id="searchResultsTitle">Search results</h2></div>
+            <button class="clear-search" id="clearHelpSearch" type="button">Clear search <span>×</span></button>
           </div>
-          <div class="panel engine-panel">
-            <div class="engine-mark" aria-hidden="true">✦</div>
-            <p class="eyebrow">PRIVATE BY DESIGN</p>
-            <h3>Your knowledge. Your device.</h3>
-            <p class="engine-copy">NovaDesk finds the closest answer in your FAQ library using local language matching. Your chats never leave this browser.</p>
-            <div class="engine-pills"><span>Offline-ready</span><span>No API key</span><span>FAQ-grounded</span></div>
+          <div class="article-results" id="articleResults"></div>
+        </section>
+
+        <section class="help-topics" aria-label="Browse help topics">
+          <div class="help-section-heading">
+            <div><span class="section-kicker">FIND YOUR WAY</span><h2>Browse help topics</h2></div>
+            <span class="topic-hint">Pick a topic to explore the guides</span>
           </div>
+
+          <section class="topic-group">
+            <div class="topic-group-heading"><span class="group-number">01</span><div><h3>Getting started</h3><p>Everything you need for your first visit.</p></div><span class="group-line"></span></div>
+            <div class="topic-grid">
+              <button class="topic-card" type="button" data-search="start setup welcome"><span class="topic-icon icon-lilac">✋</span><span class="topic-copy"><strong>Welcome to NovaDesk</strong><small>Get to know your private support workspace.</small></span><span class="topic-arrow">↗</span></button>
+              <button class="topic-card" type="button" data-search="chat assistant question"><span class="topic-icon icon-blue">✦</span><span class="topic-copy"><strong>Chat with the assistant</strong><small>Ask questions and discover how answers work.</small></span><span class="topic-arrow">↗</span></button>
+              <button class="topic-card" type="button" data-search="suggestions FAQ question"><span class="topic-icon icon-yellow">⌕</span><span class="topic-copy"><strong>Find a quick answer</strong><small>Use suggested questions or search the guide.</small></span><span class="topic-arrow">↗</span></button>
+            </div>
+          </section>
+
+          <section class="topic-group">
+            <div class="topic-group-heading"><span class="group-number group-blue">02</span><div><h3>Knowledge &amp; answers</h3><p>Keep helpful information ready for every question.</p></div><span class="group-line"></span></div>
+            <div class="topic-grid">
+              <button class="topic-card" type="button" data-search="FAQ knowledge add edit"><span class="topic-icon icon-yellow">▤</span><span class="topic-copy"><strong>Build your FAQ library</strong><small>Add, edit, and organize support answers.</small></span><span class="topic-arrow">↗</span></button>
+              <button class="topic-card" type="button" data-search="keywords matching AI improve"><span class="topic-icon icon-lilac">✎</span><span class="topic-copy"><strong>Improve answer matching</strong><small>Learn how questions find the closest FAQ.</small></span><span class="topic-arrow">↗</span></button>
+              <button class="topic-card" type="button" data-search="no answer troubleshooting"><span class="topic-icon icon-peach">☝</span><span class="topic-copy"><strong>When no answer is found</strong><small>Make the next response a better match.</small></span><span class="topic-arrow">↗</span></button>
+            </div>
+          </section>
+
+          <section class="topic-group">
+            <div class="topic-group-heading"><span class="group-number group-green">03</span><div><h3>Privacy &amp; workspace</h3><p>Your local data, conversation history, and backups.</p></div><span class="group-line"></span></div>
+            <div class="topic-grid">
+              <button class="topic-card" type="button" data-search="privacy local browser device"><span class="topic-icon icon-blue">◈</span><span class="topic-copy"><strong>Privacy &amp; local storage</strong><small>Where your FAQs and conversations live.</small></span><span class="topic-arrow">↗</span></button>
+              <button class="topic-card" type="button" data-search="export backup download JSON"><span class="topic-icon icon-green">⇩</span><span class="topic-copy"><strong>Export a workspace backup</strong><small>Download your FAQ and chat history.</small></span><span class="topic-arrow">↗</span></button>
+              <button class="topic-card" type="button" data-search="conversation logs history clear"><span class="topic-icon icon-peach">▣</span><span class="topic-copy"><strong>Manage chat history</strong><small>Find, review, and clear saved conversations.</small></span><span class="topic-arrow">↗</span></button>
+            </div>
+          </section>
+        </section>
+
+        <section class="help-contact">
+          <div class="contact-art" aria-hidden="true"><span>✦</span><i></i><b></b></div>
+          <div><span class="section-kicker">NEED A HAND?</span><h2>Still looking for an answer?</h2><p>Ask the local assistant. It searches your support knowledge without sending your question to an API.</p></div>
+          <button class="button button-primary" type="button" data-view="chat">Ask the assistant <span>↗</span></button>
+        </section>
+        <div class="help-footer"><span>NovaDesk Help Center</span><span>Private by design <i></i></span></div>
+
+        <div class="visually-hidden" aria-hidden="true">
+          <span id="statFaqs">0</span><span id="statChats">0</span>
         </div>
       </section>
 
-      <!-- VIEW 2: LIVE CHATBOT -->
       <section id="view-chat" class="view">
         <div class="page-title-row">
-          <h1>Live <span class="gradient-text">Chatbot</span></h1>
-          <button class="button button-ghost" id="newChatBtn">＋ Reset / New Chat</button>
+          <div><span class="section-kicker">NOVADESK SUPPORT</span><h1>Ask the <span class="gradient-text">assistant</span></h1><p class="subtitle">Answers come from your local FAQ library. No API or cloud AI needed.</p></div>
+          <button class="button button-ghost" id="newChatBtn" type="button">＋ New conversation</button>
         </div>
-
         <div class="chat-layout">
           <div class="chat-window">
             <div class="chat-header">
               <div class="bot-avatar">✦</div>
-              <div class="chat-header-text">
-                <strong>NovaDesk Assistant</strong>
-                <small><i></i> Local assistant <span class="chat-header-divider">·</span> No API required</small>
-              </div>
+              <div class="chat-header-text"><strong>NovaDesk Assistant</strong><small><i></i> Private and running locally <span class="chat-header-divider">·</span> No API required</small></div>
             </div>
-            
-            <!-- Messages Loop Area -->
             <div class="chat-messages" id="chatMessages" aria-live="polite" aria-label="Conversation"></div>
-
-            <!-- Quick click suggestions -->
-            <div class="suggested-area">
-              <span>TRY ASKING ONE OF THESE:</span>
-              <div class="suggested-questions" id="suggestedQuestions"></div>
-            </div>
-
-            <!-- Input compose box -->
+            <div class="suggested-area"><span>TRY A COMMON QUESTION</span><div class="suggested-questions" id="suggestedQuestions"></div></div>
             <form class="chat-compose" id="chatForm">
-              <input type="text" id="chatInput" placeholder="Ask a support question..." autocomplete="off" aria-label="Your support question" maxlength="500">
+              <input type="text" id="chatInput" placeholder="Type your question..." autocomplete="off" aria-label="Your support question" maxlength="500" required>
               <button class="send-button" type="submit" aria-label="Send message">➔</button>
             </form>
           </div>
-
-          <div class="chat-side">
+          <aside class="chat-side">
             <div class="panel">
-              <h3>About Engine</h3>
-              <p style="color: var(--text-muted); font-size: 12px; margin-top: 8px; line-height: 1.6;">
-                This assistant runs entirely in your browser. It scores your question against FAQ questions, answers, and keywords, then replies with the closest grounded match. Add FAQs to teach it.
-              </p>
+              <span class="section-kicker">HOW IT WORKS</span><h3>Answers grounded in your FAQs</h3>
+              <p class="chat-info-copy">NovaDesk compares your question with the saved FAQ titles, answers, and keywords, then shows the closest match—or lets you know when it needs more information.</p>
+              <div class="chat-info-list"><span><i>✓</i> Runs in this browser</span><span><i>✓</i> No API key required</span><span><i>✓</i> Uses your FAQ library</span></div>
             </div>
-          </div>
+          </aside>
         </div>
       </section>
 
-      <!-- VIEW 3: FAQ MANAGER CRUD -->
       <section id="view-faqs" class="view">
         <div class="page-title-row">
-          <h1>FAQ <span class="gradient-text">Manager</span></h1>
-          <button class="button button-primary" id="addFaqBtn">＋ Add New FAQ</button>
+          <div><span class="section-kicker">YOUR SUPPORT CONTENT</span><h1>FAQ <span class="gradient-text">library</span></h1><p class="subtitle">Manage the local knowledge used by your assistant.</p></div>
+          <button class="button button-primary" id="addFaqBtn" type="button">＋ Add an FAQ</button>
         </div>
-
         <div class="faq-toolbar">
-          <div class="search-box">
-            <span>🔍</span>
-            <input type="text" id="faqSearch" placeholder="Search questions, answers or tags...">
-          </div>
+          <label class="search-box"><span aria-hidden="true">⌕</span><input type="search" id="faqSearch" placeholder="Search questions, answers, or keywords..." aria-label="Search FAQs"></label>
           <span class="result-count" id="faqCountLabel">0 entries</span>
         </div>
-
-        <!-- FAQ Container Loop -->
         <div class="faq-list" id="faqList"></div>
       </section>
 
-      <!-- VIEW 4: SHEET UI - LIVE CHAT LOGS -->
       <section id="view-logs" class="view">
         <div class="page-title-row">
-          <h1>Chat <span class="gradient-text">Logs (Sheet UI)</span></h1>
-          <div class="page-actions">
-            <button class="button button-danger-ghost" id="clearLogsBtn">🗑️ Clear All Logs</button>
-            <button class="button button-ghost" id="exportLogsBtn">⇩ Export Logs</button>
-          </div>
+          <div><span class="section-kicker">LOCAL WORKSPACE</span><h1>Conversation <span class="gradient-text">history</span></h1><p class="subtitle">Review the chats saved in this browser.</p></div>
+          <div class="page-actions"><button class="button button-danger-ghost" id="clearLogsBtn" type="button">Clear history</button><button class="button button-ghost" id="exportLogsBtn" type="button">⇩ Export data</button></div>
         </div>
-
         <div class="logs-panel">
-          <div class="faq-toolbar">
-            <div class="search-box compact-search">
-              <span>🔍</span>
-              <input type="text" id="logSearch" placeholder="Filter logs...">
-            </div>
-          </div>
-          
-          <!-- Table Layout Wrapper -->
+          <div class="faq-toolbar"><label class="search-box compact-search"><span aria-hidden="true">⌕</span><input type="search" id="logSearch" placeholder="Search conversations..." aria-label="Search conversations"></label></div>
           <div class="logs-list" id="logsList"></div>
         </div>
       </section>
-
     </main>
   </div>
 
-  <!-- POPUP MODAL: ADD/EDIT FAQ -->
+  <dialog class="modal article-modal" id="articleDialog">
+    <div class="modal-head"><span class="section-kicker">NOVADESK GUIDE</span><button class="modal-close" id="closeArticle" type="button" aria-label="Close article">×</button></div>
+    <article class="article-body"><span class="article-category" id="articleCategory">HELP ARTICLE</span><h2 id="articleTitle"></h2><p id="articleAnswer"></p></article>
+    <div class="article-modal-footer"><span>Was this helpful?</span><button class="button button-primary article-ask" type="button" data-view="chat">Ask a follow-up <span>↗</span></button></div>
+  </dialog>
+
   <dialog class="modal" id="faqDialog">
-    <div class="modal-head">
-      <h2 id="faqDialogTitle">Add a FAQ</h2>
-      <button class="modal-close" id="closeFaqDialog">×</button>
-    </div>
+    <div class="modal-head"><h2 id="faqDialogTitle">Add a FAQ</h2><button class="modal-close" id="closeFaqDialog" type="button" aria-label="Close FAQ form">×</button></div>
     <form id="faqForm">
       <input type="hidden" id="faqId">
-      <label class="field-label">Question <span>*</span></label>
-      <input type="text" id="faqQuestion" class="field-input" placeholder="e.g., How to reset password?" required>
-
-      <label class="field-label">Answer <span>*</span></label>
-      <textarea id="faqAnswer" class="field-input field-textarea" rows="4" placeholder="Provide a detailed support answer..." required></textarea>
-
-      <label class="field-label">Keywords / Tags <small>(Optional, comma separated)</small></label>
-      <input type="text" id="faqKeywords" class="field-input" placeholder="e.g., login, password, security">
-
-      <div class="modal-actions">
-        <button type="button" class="button button-ghost" id="cancelFaqBtn">Cancel</button>
-        <button type="submit" class="button button-primary" id="saveFaqBtn">Save FAQ</button>
-      </div>
+      <label class="field-label" for="faqQuestion">Question <span>*</span></label>
+      <input type="text" id="faqQuestion" class="field-input" placeholder="e.g., How do I reset my password?" required maxlength="180">
+      <label class="field-label" for="faqAnswer">Answer <span>*</span></label>
+      <textarea id="faqAnswer" class="field-input field-textarea" rows="4" placeholder="Write a clear, helpful answer..." required maxlength="2000"></textarea>
+      <label class="field-label" for="faqKeywords">Keywords <small>(comma separated)</small></label>
+      <input type="text" id="faqKeywords" class="field-input" placeholder="e.g., account, reset, login" maxlength="240">
+      <div class="modal-actions"><button type="button" class="button button-ghost" id="cancelFaqBtn">Cancel</button><button type="submit" class="button button-primary">Save FAQ</button></div>
     </form>
   </dialog>
 
-  <!-- POPUP MODAL: REVIEW CONVERSATION DETAIL -->
-  <dialog class="modal" id="conversationDialog" style="max-width: 600px;">
-    <div class="modal-head">
-      <h2 id="conversationTitle">Conversation Log</h2>
-      <button class="modal-close" id="closeConversation">×</button>
-    </div>
+  <dialog class="modal conversation-modal" id="conversationDialog">
+    <div class="modal-head"><h2>Conversation details</h2><button class="modal-close" id="closeConversation" type="button" aria-label="Close conversation">×</button></div>
     <div class="conversation-detail" id="conversationDetail"></div>
   </dialog>
-
-  <!-- Notification Toast -->
-  <div class="toast" id="toast" role="status" aria-live="polite">Notification text</div>
-
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
 </html>
